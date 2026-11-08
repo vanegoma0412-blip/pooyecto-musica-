@@ -4,7 +4,7 @@ Queremos crear un espacio interactivo que permita conocer un poco más el univer
 
 La idea es que cada persona pueda recorrer distintos espacios, descubrir objetos, sonidos y fragmentos que hacen parte de ella. Más que mostrar una historia de principio a fin, nos interesa que el usuario pueda explorar y encontrar diferentes cosas a medida que interactúa con la página.
 
-## 1. Concepto
+## 1. Concepto. 
 
 Partimos de la frase "Love is the highest frequency", que representa una parte importante de la manera en que IXA entiende el amor y la música.
 
