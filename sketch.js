@@ -1,243 +1,278 @@
-
 let escenaActual = -1;
 
-let fuenteTitulo;
-let fuenteManuscrita;
+let fuenteTitulo = "Georgia";
+let fondoPrincipal;
 
+let escala = 1;
+let margenX = 0;
+let margenY = 0;
+
+const anchoBase = 1366;
+const altoBase = 768;
+
+const colorCrema = "#eee0c8";
+const colorRojo = "#c5443b";
 
 let escenas = [
   {
-    titulo: "TEXTO 1",
-    subtitulo: "TEXTO 1.1",
-    x: 0.23,
-    y: 0.36
+    titulo: "La raíz",
+    x: 350,
+    y: 375,
+    hover: 0
   },
   {
-    titulo: "TEXTO 2",
-    subtitulo: "TEXTO 2.1",
-    x: 0.77,
-    y: 0.36
+    titulo: "Lo que no dije",
+    x: 660,
+    y: 375,
+    hover: 0
   },
   {
-    titulo: "TEXTO 3",
-    subtitulo: "TEXTO 3.1",
-    x: 0.50,
-    y: 0.52
+    titulo: "El jardín del deseo",
+    x: 350,
+    y: 448,
+    hover: 0
   },
   {
-    titulo: "TEXTO 4",
-    subtitulo: "TEXTO 4.1",
-    x: 0.23,
-    y: 0.70
+    titulo: "Después de ti",
+    x: 660,
+    y: 448,
+    hover: 0
   },
   {
-    titulo: "TEXTO 5",
-    subtitulo: "TEXTO 5.1",
-    x: 0.77,
-    y: 0.70
+    titulo: "Entre sueños",
+    x: 350,
+    y: 521,
+    hover: 0
   },
   {
-    titulo: "TEXTO 6",
-    subtitulo: "TEXTO 6.1",
-    x: 0.50,
-    y: 0.87
+    titulo: "La frecuencia",
+    x: 660,
+    y: 521,
+    hover: 0
   }
 ];
 
-
 function setup() {
   createCanvas(windowWidth, windowHeight);
-
-  fuenteTitulo = "Georgia";
-  fuenteManuscrita = "cursive";
 
   loadFont("assets/fuentes/CormorantGaramond-Light.ttf")
     .then(function(fuente) {
       fuenteTitulo = fuente;
     })
     .catch(function(error) {
-      console.error("Error con Cormorant:", error);
+      console.error("No se pudo cargar la fuente:", error);
     });
-
-  loadFont("assets/fuentes/MrsSainDelafield-Regular.ttf")
-    .then(function(fuente) {
-      fuenteManuscrita = fuente;
+  loadImage("assets/imagenes/fondo-principal.png")
+    .then(function(imagen) {
+      fondoPrincipal = imagen;
     })
     .catch(function(error) {
-      console.error("Error con Mrs Saint Delafield:", error);
+      console.error("No se pudo cargar el fondo:", error);
     });
 }
 
+function actualizarEscala() {
+  escala = min(width / anchoBase, height / altoBase);
+  margenX = (width - anchoBase * escala) / 2;
+  margenY = (height - altoBase * escala) / 2;
+}
+
 function draw() {
-  background(24, 14, 20);
+  background("#241c18");
   cursor(ARROW);
+
+  actualizarEscala();
+
+  if (escenaActual === -1 && fondoPrincipal) {
+    let escalaFondo = max(
+      width / fondoPrincipal.width,
+      height / fondoPrincipal.height
+    );
+    let anchoFondo = fondoPrincipal.width * escalaFondo;
+    let altoFondo = fondoPrincipal.height * escalaFondo;
+
+    image(
+      fondoPrincipal,
+      (width - anchoFondo) / 2,
+      (height - altoFondo) / 2,
+      anchoFondo,
+      altoFondo
+    );
+  }
+
+  push();
+  translate(margenX, margenY);
+  scale(escala);
 
   if (escenaActual === -1) {
     dibujarInicio();
   } else {
     dibujarEscena();
   }
+  pop();
 }
 
 function dibujarInicio() {
   noStroke();
-  fill(180, 135, 155, 100);
-  circle(width * 0.10, height * 0.10, 180);
-
-  fill(24, 14, 20);
-  circle(width * 0.14, height * 0.08, 175);
-
+  fill(colorCrema);
   textAlign(CENTER, CENTER);
-  fill(245, 230, 220);
-
   textFont(fuenteTitulo);
-  textSize(90);
-  text("IXA", width / 2, height * 0.11);
-
-  textFont(fuenteManuscrita);
-  textSize(42);
-  text(
-    "Love is the highest frequency 44",
-    width / 2,
-    height * 0.21
-  );
-
-  stroke(170, 120, 135);
+  textStyle(NORMAL);
+  textSize(155);
+  text("IXA", 650, 130);
+  textStyle(ITALIC);
+  textSize(45);
+  text("Love is the highest frequency", 650, 225);
+  textStyle(NORMAL);
+  stroke("#9d4439");
   strokeWeight(1);
+  line(515, 274, 785, 274);
 
-  line(
-    width * 0.30,
-    height * 0.27,
-    width * 0.70,
-    height * 0.27
-  );
+  noStroke();
+  fill(colorCrema);
+  textSize(20);
+  text("LOVE IN PIECES", 650, 300);
 
+  textStyle(ITALIC);
+  textSize(18);
+  text("The Art of Falling Apart", 650, 328);
+  textStyle(NORMAL);
   for (let i = 0; i < escenas.length; i++) {
     dibujarBoton(escenas[i], i);
   }
 }
 
-function dibujarBoton(escena, i) {
-  let x = width * escena.x;
-  let movimiento = sin(frameCount * 0.02 + i) * 5;
-  let y = height * escena.y + movimiento;
+function obtenerMouse() {
+  return {
+    x: (mouseX - margenX) / escala,
+    y: (mouseY - margenY) / escala
+  };
+}
 
-  let ancho = min(320, width * 0.42);
-  let alto = 85;
+function mouseSobreBoton(escena) {
+  let mouse = obtenerMouse();
 
-  let encima =
-    mouseX > x - ancho / 2 &&
-    mouseX < x + ancho / 2 &&
-    mouseY > y - alto / 2 &&
-    mouseY < y + alto / 2;
+  return (
+    mouse.x >= escena.x &&
+    mouse.x <= escena.x + 290 &&
+    mouse.y >= escena.y - 27 &&
+    mouse.y <= escena.y + 30
+  );
+}
 
-  noStroke();
+function dibujarBoton(escena, indice) {
+  let encima = mouseSobreBoton(escena);
+  let destino = encima ? 1 : 0;
+  let suavidad = 1 - Math.exp(-deltaTime / 120);
+  escena.hover = lerp(escena.hover, destino, suavidad);
 
   if (encima) {
-    fill(250, 224, 214);
     cursor(HAND);
-  } else {
-    fill(218, 185, 175);
   }
 
-  rect(
-    x - ancho / 2,
-    y - alto / 2,
-    ancho,
-    alto,
-    25
-  );
+  let fondo = lerpColor(
+  color(35, 25, 20, 65),
+  color(125, 12, 22, 240),
+  escena.hover
+);
 
-  fill(48, 25, 33);
-  textAlign(CENTER, CENTER);
+let borde = lerpColor(
+  color(205, 183, 150, 170),
+  color(205, 100, 90),
+  escena.hover
+);
 
+  fill(fondo);
+  stroke(borde);
+  strokeWeight(1.2);
+  rect(escena.x, escena.y - 27, 290, 57);
+  let x = escena.x + escena.hover * 5;
+  let y = escena.y - escena.hover * 2;
+
+  noStroke();
   textFont(fuenteTitulo);
-  textSize(25);
-  text(escena.titulo, x, y - 15);
+  textStyle(NORMAL);
+  textAlign(LEFT, CENTER);
+  fill(colorRojo);
+  textSize(23);
+  text(String(indice + 1).padStart(2, "0"), x + 12, y);
 
-  textFont(fuenteManuscrita);
-  textSize(26);
-  text(escena.subtitulo, x, y + 18);
+  fill(colorCrema);
+
+  let tamanoTexto = 29;
+  textSize(tamanoTexto);
+
+  while (textWidth(escena.titulo) > 190 && tamanoTexto > 16) {
+    tamanoTexto--;
+    textSize(tamanoTexto);
+  }
+
+  text(escena.titulo, x + 50, y);
+
+  stroke(colorCrema);
+  strokeWeight(1.3);
+  let flechaX = x + 269;
+
+  line(flechaX - 15, y, flechaX, y);
+  line(flechaX - 6, y - 5, flechaX, y);
+  line(flechaX - 6, y + 5, flechaX, y);
+
+  noStroke();
 }
 
 function dibujarEscena() {
   let escena = escenas[escenaActual];
 
-  fill(245, 230, 220);
+  noStroke();
+  fill("#241c18");
+  rect(0, 0, anchoBase, altoBase);
+  fill(colorCrema);
+  textFont(fuenteTitulo);
+  textStyle(NORMAL);
   textAlign(CENTER, CENTER);
-
-  textFont(fuenteTitulo);
-  textSize(55);
-  text(
-    escena.titulo,
-    width / 2,
-    height / 2 - 60
-  );
-
-  textFont(fuenteManuscrita);
-  textSize(38);
-  text(
-    escena.subtitulo,
-    width / 2,
-    height / 2 + 10
-  );
-
-  textFont(fuenteTitulo);
-  textSize(20);
+  textSize(65);
+  text(escena.titulo, anchoBase / 2, altoBase / 2 - 45);
+  textSize(26);
   text(
     "Aquí irá el contenido de esta escena",
-    width / 2,
-    height / 2 + 100
+    anchoBase / 2,
+    altoBase / 2 + 35
   );
 
-  fill(218, 185, 175);
-  noStroke();
-  rect(30, 30, 145, 45, 20);
+  let encima = mouseSobreInicio();
 
-  fill(48, 25, 33);
-  textFont(fuenteTitulo);
-  textSize(22);
-  text("← Inicio", 102, 52);
+  fill(encima ? colorRojo : colorCrema);
+  textAlign(LEFT, CENTER);
+  textSize(28);
+  text("← Inicio", 45, 55);
 
-  if (
-    mouseX > 30 &&
-    mouseX < 175 &&
-    mouseY > 30 &&
-    mouseY < 75
-  ) {
+  if (encima) {
     cursor(HAND);
   }
+}
+
+function mouseSobreInicio() {
+  let mouse = obtenerMouse();
+  return (
+    mouse.x >= 30 &&
+    mouse.x <= 180 &&
+    mouse.y >= 30 &&
+    mouse.y <= 80
+  );
 }
 
 function mousePressed() {
   if (escenaActual === -1) {
     for (let i = 0; i < escenas.length; i++) {
-      let escena = escenas[i];
-
-      let x = width * escena.x;
-      let y = height * escena.y +
-        sin(frameCount * 0.02 + i) * 5;
-
-      let ancho = min(320, width * 0.42);
-
-      if (
-        mouseX > x - ancho / 2 &&
-        mouseX < x + ancho / 2 &&
-        mouseY > y - 42.5 &&
-        mouseY < y + 42.5
-      ) {
+      if (mouseSobreBoton(escenas[i])) {
         escenaActual = i;
         break;
       }
     }
-  } else {
-    if (
-      mouseX > 30 &&
-      mouseX < 175 &&
-      mouseY > 30 &&
-      mouseY < 75
-    ) {
-      escenaActual = -1;
+  } else if (mouseSobreInicio()) {
+    escenaActual = -1;
+    for (let escena of escenas) {
+      escena.hover = 0;
     }
   }
 }

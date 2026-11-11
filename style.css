@@ -1,23 +1,25 @@
-
-
-
 @font-face {
   font-family: "Cormorant IXA";
-  src: url("assets/fuentes/cormorant-light.ttf");
+  src: url("assets/fuentes/CormorantGaramond-Light.ttf");
   font-weight: 300;
 }
 
 @font-face {
   font-family: "Mrs Saint Delafield";
-  src: url("assets/fuentes/mrs-saint-delafield.ttf");
+  src: url("assets/fuentes/MrsSaintDelafield-Regular.ttf");
 }
-
-
+html,
 body {
   margin: 0;
   padding: 0;
-  background: #100d16;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
+  background: #241c18;
+}
+main {
+  width: 100%;
+  height: 100%;
 }
 canvas {
   display: block;
