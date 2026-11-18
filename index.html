@@ -3,16 +3,61 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IXA - Universo Musical</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#1b1018">
+  <title>IXA — LOVE IN PIECES</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 
   <script src="https://cdn.jsdelivr.net/npm/p5@2.3.3/lib/p5.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/p5.sound@0.4.1/dist/p5.sound.min.js"></script>
 </head>
+
 <body>
-  <main></main>
+  <main id="app">
+    <section id="gallery" class="gallery" aria-label="Galería de IXA">
+      <div class="gallery-intro">
+        <div class="eyebrow">UN UNIVERSO MUSICAL</div>
+        <h1>IXA</h1>
+        <div class="gallery-script">Love is the highest frequency</div>
+        <div class="gallery-rule"></div>
+        <h2>LOVE IN PIECES</h2>
+        <p>Una galería de corazones rotos</p>
+      </div>
+
+      <nav id="gallery-links" class="gallery-links" aria-label="Escenas de la galería"></nav>
+
+      <div class="gallery-bottom">
+        SEIS ESCENAS · UN RECORRIDO LIBRE
+      </div>
+    </section>
+
+    <section id="scene-ui" class="scene-ui is-hidden" aria-label="Escena interactiva">
+      <header class="scene-heading">
+        <div class="scene-kicker">IXA / LOVE IN PIECES</div>
+        <h2 id="scene-title"></h2>
+        <p id="scene-hint"></p>
+        <p id="scene-progress" aria-live="polite"></p>
+        <p id="scene-closure" aria-live="polite"></p>
+      </header>
+
+      <div id="letters-layer" class="letters-layer" aria-live="polite"></div>
+
+      <div id="scene-controls" class="scene-controls">
+        <button type="button" id="btn-gallery">← Galería</button>
+        <button type="button" id="btn-play">▶ Música</button>
+        <button type="button" id="btn-mute">♫ Sonido</button>
+        <button type="button" id="btn-restart">↺ Reiniciar</button>
+        <button type="button" id="btn-action" class="action-button"></button>
+      </div>
+
+      <div id="scene-status" class="scene-status" role="status"></div>
+    </section>
+  </main>
+
   <script src="sketch.js"></script>
 </body>
 </html>
-
